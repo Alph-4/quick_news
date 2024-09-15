@@ -19,27 +19,36 @@ class NewsService {
       params['q'] = query;
     }
 
+    print('fetchHeadLineNews: started, params: $params');
+
     final response =
         await http.get(Uri.https('newsapi.org', 'v2/top-headlines', params));
 
+    print('fetchHeadLineNews: response status: ${response.statusCode}');
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
+
+      print('fetchHeadLineNews: response data: $jsonData');
 
       if (jsonData['status'] == 'ok') {
         final dataList = (jsonData['articles'] as List<dynamic>)
             .map((json) => HeadLinesNews.fromJson(json))
             .toList();
 
+        print('fetchHeadLineNews: completed, data length: ${dataList.length}');
+
         return dataList;
       } else {
+        print('fetchHeadLineNews: error: ${jsonData['message']}');
         throw Exception(jsonData['message']);
       }
     } else {
+      print('fetchHeadLineNews: error: Failed to load news');
       throw Exception('Failed to load news');
     }
   }
 
-   Future<List<HeadLinesNews>> fetchNewsByCategory(
+  Future<List<HeadLinesNews>> fetchNewsByCategory(
       {required String country, String? category, String? query}) async {
     final params = <String, String>{
       'country': country,

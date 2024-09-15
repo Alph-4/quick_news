@@ -12,15 +12,18 @@ class NewsRepositoryImpl implements NewsRepository {
 
   @override
   Future<List<HeadLinesNews>> fetchHeadLineNews() async {
+    print("Fetching top headlines");
     // Appel à la méthode getNews de NewsService
-    return ref.read(newsProvider).fetchHeadLineNews(country: "us");
+    final response = ref.read(newsProvider).fetchHeadLineNews(country: "us");
+    print("Fetched top headlines");
+    return response;
   }
 
+
   @override
-  Future<List<HeadLinesNews>> fetchHeadLineNewsByCategory() async {
+  Future<List<HeadLinesNews>> fetchHeadLineNewsByCategory(
+      String selectedCategory) async {
     // Appel à la méthode getNews de NewsService
     return ref.read(newsProvider).fetchNewsByCategory(country: "us");
   }
-  
-
 }

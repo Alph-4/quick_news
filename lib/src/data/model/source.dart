@@ -1,5 +1,5 @@
 class Source {
-  Null id;
+  String? id;
   String? name;
 
   Source({this.id, this.name});
