@@ -12,15 +12,7 @@ class MediaPage extends ConsumerWidget {
     final searchController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: searchController,
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            hintText: 'Search news',
-          ),
-        ),
-      ),
+      appBar: AppBar(title: Text("Media")),
       body: Expanded(
           child: FutureBuilder(
         future: viewModel.fetchHeadLineNews(),
