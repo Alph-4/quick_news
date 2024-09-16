@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quick_news/src/ui/detail/article_detail_page.dart';
 import 'package:quick_news/src/ui/news/news_viewmodel.dart';
+import 'package:quick_news/src/ui/widget/new_card.dart';
 
 class NewsPage extends ConsumerStatefulWidget {
   const NewsPage({super.key});
@@ -11,21 +12,18 @@ class NewsPage extends ConsumerStatefulWidget {
 }
 
 class _NewsPageState extends ConsumerState<NewsPage> {
-  late final TextEditingController searchController;
-
   @override
-  void initState() {
-    super.initState();
-
-    searchController = TextEditingController();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {});
+  void dispose() {
+    super.dispose();
   }
 
   @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(newsViewModelProvider).fetchHeadLineNews();
+    });
   }
 
   @override
@@ -34,36 +32,19 @@ class _NewsPageState extends ConsumerState<NewsPage> {
 
     const categories = [
       'Business',
-      'Technology',
       'Entertainment',
       'Health',
       'Science',
       'Sports',
-      'Politics',
-      'Finance',
-      'World',
-      'Travel',
-      'Food',
-      'Fashion',
-      'Gaming',
-      'Music',
-      'Movies',
-      'Lifestyle',
-      'Automotive',
-      'Environment',
-      'Startups',
-      'Education',
+      'technology',
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: AppBar(
-          title: const Text('HeadLines News'),
-        ),
+        title: const Text('HeadLines News'),
       ),
       body: Column(
         children: [
-          searchBar(),
           Container(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -93,97 +74,20 @@ class _NewsPageState extends ConsumerState<NewsPage> {
             ),
           ),
           const Divider(),
-          Expanded(
-              child: ref.watch(headlineNewsProvider).when(
-                    data: (news) => ListView.builder(
-                      itemCount: news.length,
-                      itemBuilder: (context, index) {
-                        final newsItem = news[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    ArticleDetailPage(article: newsItem)));
-                          },
-                          child: Card(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  newsItem.title,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  newsItem.description,
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'Author: ${newsItem.author}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                Text(
-                                  'Published at: ${newsItem.publishedAt}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    loading: () => CircularProgressIndicator(),
-                    error: (err, stack) => Text('Error: $err'),
-                  ))
+          viewModel.headlineNews == null
+              ? CircularProgressIndicator()
+              : newsFeed(viewModel),
         ],
       ),
     );
   }
 
-  Widget searchBar() {
-    return Container(
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-            offset: const Offset(12, 26),
-            blurRadius: 50,
-            spreadRadius: 0,
-            color: Colors.grey.withOpacity(.1)),
-      ]),
-      child: TextField(
-        controller: searchController,
-        onChanged: (value) {
-          //Do something wi
-        },
-        decoration: const InputDecoration(
-          prefixIcon: Icon(
-            Icons.search,
-            color: Color(0xff4338CA),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "Search headlines news",
-          hintStyle: TextStyle(color: Colors.grey),
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(15.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(15.0)),
-          ),
+  Widget newsFeed(NewsViewModel viewModel) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: viewModel.headlineNews?.length ?? 0,
+        itemBuilder: (context, index) => NewCard(
+          newItem: viewModel.headlineNews![index],
         ),
       ),
     );

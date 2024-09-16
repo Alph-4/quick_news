@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quick_news/src/data/model/headline_new.dart';
 
 class ArticleDetailPage extends StatefulWidget {
-  final HeadLinesNews article;
+  final Article article;
 
   const ArticleDetailPage({
     required this.article,

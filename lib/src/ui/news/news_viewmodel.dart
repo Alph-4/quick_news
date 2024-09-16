@@ -6,10 +6,6 @@ import 'package:quick_news/src/data/repository/news_repository_impl.dart';
 final newsViewModelProvider =
     ChangeNotifierProvider((ref) => NewsViewModel(ref));
 
-final headlineNewsProvider = FutureProvider<List<HeadLinesNews>>((ref) async {
-  return ref.read(newsRepositoryProvider).fetchHeadLineNews();
-});
-
 class NewsViewModel with ChangeNotifier {
   NewsViewModel(this.ref);
 
@@ -18,6 +14,9 @@ class NewsViewModel with ChangeNotifier {
 
   String _selectedCategory = '';
   String get selectedCategory => _selectedCategory;
+
+  List<Article>? _headlineNews;
+  List<Article>? get headlineNews => _headlineNews;
 
   void updateCategory(String category) {
     _selectedCategory = category;
@@ -29,23 +28,23 @@ class NewsViewModel with ChangeNotifier {
     }
   }
 
-  Future<List<HeadLinesNews>> fetchHeadLineNews() async {
+  Future<void> fetchHeadLineNews() async {
     final stopwatch = Stopwatch()..start();
     print('fetchHeadLineNews: started');
     try {
       final headLineNewsList = await _repository.fetchHeadLineNews();
       print(
           'fetchHeadLineNews: completed in ${stopwatch.elapsed.inMilliseconds}ms');
-      return headLineNewsList;
+      _headlineNews = headLineNewsList;
     } catch (e, stackTrace) {
       print('fetchHeadLineNews: error: $e');
       print(stackTrace);
       rethrow;
     }
+    notifyListeners();
   }
 
-  Future<List<HeadLinesNews>> fetchHeadLineNewsByCategory(
-      String selectedCategory) async {
+  Future<void> fetchHeadLineNewsByCategory(String selectedCategory) async {
     final stopwatch = Stopwatch()..start();
     print('fetchHeadLineNewsByCategory: started');
     try {
@@ -53,11 +52,12 @@ class NewsViewModel with ChangeNotifier {
           await _repository.fetchHeadLineNewsByCategory(selectedCategory);
       print(
           'fetchHeadLineNewsByCategory: completed in ${stopwatch.elapsed.inMilliseconds}ms');
-      return headLineNewsList;
+      _headlineNews = headLineNewsList;
     } catch (e, stackTrace) {
       print('fetchHeadLineNewsByCategory: error: $e');
       print(stackTrace);
       rethrow;
     }
+    notifyListeners();
   }
 }

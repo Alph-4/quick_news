@@ -1,6 +1,6 @@
 import 'package:quick_news/src/data/model/source.dart';
 
-class HeadLinesNews {
+class Article {
   final Source source;
   final String author;
   final String title;
@@ -10,7 +10,7 @@ class HeadLinesNews {
   final String publishedAt;
   final String content;
 
-  HeadLinesNews({
+  Article({
     required this.source,
     required this.author,
     required this.title,
@@ -21,8 +21,8 @@ class HeadLinesNews {
     required this.content,
   });
 
-  factory HeadLinesNews.fromJson(Map<String, dynamic> json) {
-    return HeadLinesNews(
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article(
       source: Source.fromJson(json['source'] ?? <String, dynamic>{}),
       author: json['author'] ?? '',
       title: json['title'] ?? '',
@@ -47,4 +47,3 @@ class HeadLinesNews {
     return data;
   }
 }
-

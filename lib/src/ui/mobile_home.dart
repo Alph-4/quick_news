@@ -85,6 +85,7 @@ class _MobileAppHomePageState extends State<MobileAppHomePage> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: "News"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+          BottomNavigationBarItem(icon: Icon(Icons.source), label: "Media"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
         ]);
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quick_news/src/ui/media/media_viewmodel.dart';
 import 'package:quick_news/src/ui/news/news_viewmodel.dart';
 
 class MediaPage extends ConsumerWidget {
@@ -7,22 +8,48 @@ class MediaPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(newsViewModelProvider);
-
-    final searchController = TextEditingController();
+    final viewModel = ref.watch(mediaViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text("Media")),
       body: Expanded(
           child: FutureBuilder(
-        future: viewModel.fetchHeadLineNews(),
+        future: viewModel.fetchMedia(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
               itemCount: snapshot.data?.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(snapshot.data![index].title!),
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          snapshot.data![index].name!,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          snapshot.data![index].description!,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Category: ${snapshot.data![index].category!}',
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               },
             );
