@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:quick_news/src/data/local/model/local_user.dart';
 import 'package:quick_news/src/ui/contact_us/contact_page.dart';
 import 'package:quick_news/src/ui/theme/app_theme.dart';
@@ -14,6 +17,12 @@ class ProfilePage extends ConsumerStatefulWidget {
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
   bool _isDarkMode = false;
+  File? _imageFile;
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +53,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          userCard(),
+          userCard(_imageFile),
           const SizedBox(height: 20),
           ListTile(
+            leading: Icon(Icons.person),
+            trailing: Icon(Icons.arrow_forward_ios_outlined),
             onTap: () {
               // TODO:
             },
@@ -54,6 +65,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           ),
           const SizedBox(height: 20),
           ListTile(
+            leading: Icon(Icons.star),
+            trailing: Icon(Icons.arrow_forward_ios_outlined),
             onTap: () {
               // TODO: go to store app page
             },
@@ -61,6 +74,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           ),
           const SizedBox(height: 20),
           ListTile(
+            leading: Icon(Icons.favorite),
+            trailing: Icon(Icons.arrow_forward_ios_outlined),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ContactPage(),
+                ),
+              );
+            },
+            title: const Text('Favorites Article'),
+          ),
+          const SizedBox(height: 20),
+          ListTile(
+            leading: Icon(Icons.mail),
+            trailing: Icon(Icons.arrow_forward_ios_outlined),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -79,46 +107,59 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       ),
     );
   }
-}
 
-Widget userCard() {
-  return Card(
-    child: Container(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: [
-          CachedNetworkImage(
-            placeholder: (context, url) => const CircularProgressIndicator(),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-            fit: BoxFit.contain,
-            imageUrl: LocalUser().profileImageUrl!,
-            imageBuilder: (context, imageProvider) {
-              // you can access to imageProvider
-              return CircleAvatar(
-                radius: 25,
-                // or any widget that use imageProvider like (PhotoView)
-                backgroundImage: imageProvider,
-              );
-            },
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          Expanded(
-              flex: 2,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    LocalUser().displayName!,
-                  ),
-                  Text(
-                    LocalUser().email!,
-                  ),
-                ],
-              ))
-        ],
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  Widget userCard(File? imageFile) {
+    return Card(
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          children: [
+            Center(
+              child: GestureDetector(
+                onTap: () => _pickImage,
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: imageFile != null
+                      ? FileImage(imageFile!) as ImageProvider
+                      : (LocalUser().profileImageUrl != null &&
+                              LocalUser().profileImageUrl!.isNotEmpty)
+                          ? NetworkImage(LocalUser().profileImageUrl!)
+                          : null,
+                  child: LocalUser().profileImageUrl == null
+                      ? const Icon(Icons.camera_alt, size: 50)
+                      : null,
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 16,
+            ),
+            Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      LocalUser().displayName!,
+                    ),
+                    Text(
+                      LocalUser().email!,
+                    ),
+                  ],
+                ))
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
