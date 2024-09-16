@@ -2,6 +2,12 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+//HIVE BOX
+  final String  newsBoxName = "news_box";
+  final String  mediaBoxName = "media_box";
+
+
+
 enum Flavor { development, production }
 
 @immutable

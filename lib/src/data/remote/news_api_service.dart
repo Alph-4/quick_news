@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:quick_news/src/data/model/news.dart';
@@ -35,6 +36,10 @@ class NewsService {
         final dataList = (jsonData['articles'] as List<dynamic>)
             .map((json) => NewModel.fromJson(json))
             .toList();
+
+        final newsBox = Hive.box<NewModel>(newsBoxName);
+        await newsBox.clear();
+        await newsBox.addAll(dataList);
 
         print('fetchHeadLineNews: completed, data length: ${dataList.length}');
 
@@ -146,6 +151,10 @@ class NewsService {
         final dataList = (jsonData['sources'] as List<dynamic>)
             .map((json) => Media.fromJson(json))
             .toList();
+
+        final mediaBox = Hive.box<NewModel>(mediaBoxName);
+        await mediaBox.clear();
+        await mediaBox.addAll(dataList);
 
         return dataList; // Add this return statement
       } else {

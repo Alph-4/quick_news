@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:quick_news/src/data/model/source.dart';
 
-part 'new_model.g.dart';
+part 'news.g.dart';
 
 @HiveType(typeId: 1) //typeId should be unique for each model
 class NewModel {

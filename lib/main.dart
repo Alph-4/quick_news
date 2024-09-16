@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quick_news/src/data/model/news.dart';
+import 'package:quick_news/src/fondation/constants.dart';
 import 'src/app.dart';
 
 void main() async {
@@ -20,6 +22,7 @@ void main() async {
 
 Future<void> initHive() async {
   await Hive.initFlutter();
-    Hive.registerAdapter(NewsBoxAdapter());
-
+  await Hive.openBox<NewModel>(newsBoxName);
+  await Hive.openBox<NewModel>(mediaBoxName);
+  Hive.registerAdapter(NewModelAdapter());
 }
