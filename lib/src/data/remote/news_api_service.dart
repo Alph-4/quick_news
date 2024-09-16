@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:quick_news/src/data/model/headline_new.dart';
+import 'package:quick_news/src/data/model/news.dart';
 import 'package:quick_news/src/data/model/media.dart';
 import 'package:quick_news/src/fondation/constants.dart';
 
 final newsApiProvider = Provider((ref) => NewsService());
 
 class NewsService {
-  Future<List<Article>> fetchHeadLineNews(
+  Future<List<NewModel>> fetchHeadLineNews(
       {required String country, String? query}) async {
     final params = <String, String>{
       'country': country,
@@ -33,7 +33,7 @@ class NewsService {
 
       if (jsonData['status'] == 'ok') {
         final dataList = (jsonData['articles'] as List<dynamic>)
-            .map((json) => Article.fromJson(json))
+            .map((json) => NewModel.fromJson(json))
             .toList();
 
         print('fetchHeadLineNews: completed, data length: ${dataList.length}');
@@ -49,7 +49,7 @@ class NewsService {
     }
   }
 
-  Future<List<Article>> fetchNewsByCategory(
+  Future<List<NewModel>> fetchNewsByCategory(
       {required String country, String? category, String? query}) async {
     final params = <String, String>{
       'country': country,
@@ -72,7 +72,7 @@ class NewsService {
 
       if (jsonData['status'] == 'ok') {
         final dataList = (jsonData['articles'] as List<dynamic>)
-            .map((json) => Article.fromJson(json))
+            .map((json) => NewModel.fromJson(json))
             .toList();
 
         return dataList;
@@ -84,7 +84,7 @@ class NewsService {
     }
   }
 
-  Future<List<Article>> fetchSearchNews({
+  Future<List<NewModel>> fetchSearchNews({
     required String query,
     String? language,
     String? sortBy,
@@ -103,7 +103,7 @@ class NewsService {
 
       if (jsonData['status'] == 'ok') {
         final dataList = (jsonData['articles'] as List<dynamic>)
-            .map((json) => Article.fromJson(json))
+            .map((json) => NewModel.fromJson(json))
             .toList();
 
         return dataList;

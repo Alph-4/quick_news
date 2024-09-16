@@ -1,6 +1,6 @@
-import 'package:quick_news/src/data/model/headline_new.dart';
+import 'package:quick_news/src/data/model/news.dart';
 
 abstract class NewsRepository {
-  Future<List<Article>> fetchHeadLineNews();
-  Future<List<Article>> fetchHeadLineNewsByCategory(String selectedCategory);
+  Future<List<NewModel>> fetchHeadLineNews();
+  Future<List<NewModel>> fetchHeadLineNewsByCategory(String selectedCategory);
 }

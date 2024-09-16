@@ -1,6 +1,6 @@
-import 'package:quick_news/src/data/model/headline_new.dart';
+import 'package:quick_news/src/data/model/news.dart';
 
 abstract class SearchNewsRepository {
-  Future<List<Article>> searchNews(
+  Future<List<NewModel>> searchNews(
       String query, String language, String sortBy);
 }

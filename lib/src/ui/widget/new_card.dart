@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:quick_news/src/data/model/headline_new.dart';
+import 'package:quick_news/src/data/model/news.dart';
 import 'package:quick_news/src/ui/detail/article_detail_page.dart';
 import 'package:relative_time/relative_time.dart';
 
 class NewCard extends StatefulWidget {
-  final Article newItem;
+  final NewModel newItem;
 
   const NewCard({super.key, required this.newItem});
 

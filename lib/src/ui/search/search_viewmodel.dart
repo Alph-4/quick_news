@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quick_news/src/data/model/headline_new.dart';
+import 'package:quick_news/src/data/model/news.dart';
 import 'package:quick_news/src/data/repository/search_news_repository_impl.dart';
 
 final searchNewsViewModelProvider =
@@ -18,8 +18,8 @@ class SearchNewsViewModel with ChangeNotifier {
 
   String sortBy = "publishedAt";
 
-  List<Article>? _searchNews;
-  List<Article>? get searchNews => _searchNews;
+  List<NewModel>? _searchNews;
+  List<NewModel>? get searchNews => _searchNews;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;

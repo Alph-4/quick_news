@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quick_news/src/data/model/headline_new.dart';
+import 'package:quick_news/src/data/model/news.dart';
 import 'package:quick_news/src/data/remote/news_api_service.dart';
 import 'package:quick_news/src/data/repository/news_repository.dart';
 
@@ -11,7 +11,7 @@ class NewsRepositoryImpl implements NewsRepository {
   NewsRepositoryImpl(this.ref);
 
   @override
-  Future<List<Article>> fetchHeadLineNews() async {
+  Future<List<NewModel>> fetchHeadLineNews() async {
     print("Fetching top headlines");
     // Appel à la méthode getNews de NewsService
     final response = ref.read(newsApiProvider).fetchHeadLineNews(country: "us");
@@ -20,7 +20,7 @@ class NewsRepositoryImpl implements NewsRepository {
   }
 
   @override
-  Future<List<Article>> fetchHeadLineNewsByCategory(
+  Future<List<NewModel>> fetchHeadLineNewsByCategory(
       String selectedCategory) async {
     return ref
         .read(newsApiProvider)

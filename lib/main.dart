@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'src/app.dart';
 
@@ -12,4 +13,13 @@ void main() async {
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
- runApp(const ProviderScope(child: MyApp()));}
+  initHive();
+
+  runApp(const ProviderScope(child: MyApp()));
+}
+
+Future<void> initHive() async {
+  await Hive.initFlutter();
+    Hive.registerAdapter(NewsBoxAdapter());
+
+}

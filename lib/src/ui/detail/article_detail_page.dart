@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quick_news/src/data/model/headline_new.dart';
+import 'package:quick_news/src/data/model/news.dart';
 
 class ArticleDetailPage extends StatefulWidget {
-  final Article article;
+  final NewModel article;
 
   const ArticleDetailPage({
     required this.article,

@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quick_news/src/data/model/headline_new.dart';
+import 'package:quick_news/src/data/model/news.dart';
 import 'package:quick_news/src/data/remote/news_api_service.dart';
 import 'package:quick_news/src/data/repository/search_news_repository.dart';
 
@@ -12,7 +12,7 @@ class SearchNewsRepositoryImpl implements SearchNewsRepository {
   SearchNewsRepositoryImpl(this.ref);
 
   @override
-  Future<List<Article>> searchNews(
+  Future<List<NewModel>> searchNews(
       String query, String language, String sortBy) {
     print("Fetching search news");
     // Appel à la méthode getNews de NewsService
