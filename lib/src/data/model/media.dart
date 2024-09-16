@@ -27,14 +27,14 @@ class Media {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['url'] = this.url;
-    data['category'] = this.category;
-    data['language'] = this.language;
-    data['country'] = this.country;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['description'] = description;
+    data['url'] = url;
+    data['category'] = category;
+    data['language'] = language;
+    data['country'] = country;
     return data;
   }
 }

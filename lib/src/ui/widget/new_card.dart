@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quick_news/src/data/model/headline_new.dart';
 import 'package:quick_news/src/ui/detail/article_detail_page.dart';
+import 'package:relative_time/relative_time.dart';
 
 class NewCard extends StatefulWidget {
   final Article newItem;
@@ -21,7 +22,7 @@ class _NewCardState extends State<NewCard> {
       },
       child: Card(
         child: Container(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -41,7 +42,7 @@ class _NewCardState extends State<NewCard> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Published at: ${widget.newItem.publishedAt}',
+                widget.newItem.publishedAt!.relativeTime(context),
                 style: const TextStyle(
                   fontSize: 12,
                 ),
@@ -55,7 +56,7 @@ class _NewCardState extends State<NewCard> {
                       fontSize: 12,
                     ),
                   )),
-                  Spacer(),
+                  const Spacer(),
                   Expanded(
                       child: Text(
                     '${widget.newItem.source.name}',

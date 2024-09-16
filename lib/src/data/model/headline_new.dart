@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:quick_news/src/data/model/source.dart';
 
 class Article {
@@ -7,7 +8,7 @@ class Article {
   final String description;
   final String url;
   final String urlToImage;
-  final String publishedAt;
+  final DateTime? publishedAt;
   final String content;
 
   Article({
@@ -17,7 +18,7 @@ class Article {
     required this.description,
     required this.url,
     required this.urlToImage,
-    required this.publishedAt,
+    this.publishedAt,
     required this.content,
   });
 
@@ -29,7 +30,8 @@ class Article {
       description: json['description'] ?? '',
       url: json['url'] ?? '',
       urlToImage: json['urlToImage'] ?? '',
-      publishedAt: json['publishedAt'] ?? '',
+      publishedAt:
+          DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(json['publishedAt']),
       content: json['content'] ?? '',
     );
   }

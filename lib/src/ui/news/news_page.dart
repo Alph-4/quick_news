@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quick_news/src/ui/detail/article_detail_page.dart';
 import 'package:quick_news/src/ui/news/news_viewmodel.dart';
 import 'package:quick_news/src/ui/widget/new_card.dart';
 
@@ -75,7 +74,7 @@ class _NewsPageState extends ConsumerState<NewsPage> {
           ),
           const Divider(),
           viewModel.headlineNews == null
-              ? CircularProgressIndicator()
+              ? const CircularProgressIndicator()
               : newsFeed(viewModel),
         ],
       ),

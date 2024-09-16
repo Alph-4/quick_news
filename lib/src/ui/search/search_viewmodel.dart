@@ -44,7 +44,8 @@ class SearchNewsViewModel with ChangeNotifier {
           await _repository.searchNews(_query, languageCode, sortBy);
       print(
           'fetchSearchNews: completed in ${stopwatch.elapsed.inMilliseconds}ms');
-      _searchNews = newArticleList;
+      _searchNews = newArticleList
+        ..sort((a, b) => a.publishedAt!.compareTo(b.publishedAt!));
     } catch (e, stackTrace) {
       print('fetchSearchNews: error: $e');
       print(stackTrace);

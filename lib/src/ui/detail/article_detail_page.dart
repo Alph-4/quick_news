@@ -30,7 +30,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
               style: const TextStyle(fontSize: 16),
             ),
             Text(
-              widget.article.publishedAt,
+              widget.article.publishedAt?.toIso8601String() ?? '',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 10),

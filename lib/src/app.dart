@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quick_news/src/ui/mobile_home.dart';
 import 'package:quick_news/src/ui/theme/app_theme.dart';
+import 'package:relative_time/relative_time.dart';
 
 /// The Widget that configures your application.
 class MyApp extends HookConsumerWidget {
@@ -35,6 +36,7 @@ class MyApp extends HookConsumerWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
+          RelativeTimeLocalizations.delegate,
         ],
         supportedLocales: const [
           Locale('en', ''), // English, no country code

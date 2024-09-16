@@ -1,7 +1,6 @@
 import 'package:animated_icon/animated_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quick_news/src/ui/news/news_viewmodel.dart';
 import 'package:quick_news/src/ui/search/search_viewmodel.dart';
 import 'package:quick_news/src/ui/widget/new_card.dart';
 
@@ -117,31 +116,41 @@ class _SearchPageState extends ConsumerState<SearchPage> {
       child: TextField(
         enableSuggestions: true,
         controller: searchController,
-        onChanged: (value) {},
+        onChanged: (value) {
+          setState(() {
+            searchController.text = value;
+          });
+        },
         onSubmitted: (value) {
           debugPrint(value.toString());
           viewModel.updateQuery(value, languageCode);
         },
         decoration: InputDecoration(
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
             Icons.search,
           ),
-          suffixIcon: IconButton(
-            onPressed: searchController.clear,
-            icon: Icon(Icons.clear),
-          ),
+          suffixIcon: searchController.text.isEmpty
+              ? null
+              : IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      searchController.clear();
+                    });
+                  },
+                ),
           filled: true,
           hintText: "Search headlines news",
           contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          border: OutlineInputBorder(
+              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white, width: 1.0),
             borderRadius: BorderRadius.all(Radius.circular(15.0)),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white, width: 2.0),
             borderRadius: BorderRadius.all(Radius.circular(15.0)),
           ),
