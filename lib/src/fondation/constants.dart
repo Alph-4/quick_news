@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 //HIVE BOX
   final String  newsBoxName = "news_box";
+  final String  favoriteNewsBoxName = "favorites_news_box";
   final String  mediaBoxName = "media_box";
 
 

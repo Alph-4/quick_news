@@ -152,7 +152,7 @@ class NewsService {
             .map((json) => Media.fromJson(json))
             .toList();
 
-        final mediaBox = Hive.box<NewModel>(mediaBoxName);
+        final mediaBox = Hive.box<Media>(mediaBoxName);
         await mediaBox.clear();
         await mediaBox.addAll(dataList);
 
