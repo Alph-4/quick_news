@@ -15,6 +15,9 @@ class NewsViewModel with ChangeNotifier {
   String _selectedCategory = '';
   String get selectedCategory => _selectedCategory;
 
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
   List<Article>? _headlineNews;
   List<Article>? get headlineNews => _headlineNews;
 
@@ -29,6 +32,8 @@ class NewsViewModel with ChangeNotifier {
   }
 
   Future<void> fetchHeadLineNews() async {
+    _isLoading = true;
+    notifyListeners();
     final stopwatch = Stopwatch()..start();
     print('fetchHeadLineNews: started');
     try {
@@ -41,10 +46,13 @@ class NewsViewModel with ChangeNotifier {
       print(stackTrace);
       rethrow;
     }
+    _isLoading = false;
     notifyListeners();
   }
 
   Future<void> fetchHeadLineNewsByCategory(String selectedCategory) async {
+    _isLoading = true;
+    notifyListeners();
     final stopwatch = Stopwatch()..start();
     print('fetchHeadLineNewsByCategory: started');
     try {
@@ -58,6 +66,7 @@ class NewsViewModel with ChangeNotifier {
       print(stackTrace);
       rethrow;
     }
+    _isLoading = false;
     notifyListeners();
   }
 }

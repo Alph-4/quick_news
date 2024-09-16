@@ -83,6 +83,9 @@ class _NewsPageState extends ConsumerState<NewsPage> {
   }
 
   Widget newsFeed(NewsViewModel viewModel) {
+    if (viewModel.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return Expanded(
       child: ListView.builder(
         itemCount: viewModel.headlineNews?.length ?? 0,

@@ -115,15 +115,20 @@ class _SearchPageState extends ConsumerState<SearchPage> {
             color: Colors.grey.withOpacity(.1)),
       ]),
       child: TextField(
+        enableSuggestions: true,
         controller: searchController,
         onChanged: (value) {},
         onSubmitted: (value) {
           debugPrint(value.toString());
           viewModel.updateQuery(value, languageCode);
         },
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.search,
+          ),
+          suffixIcon: IconButton(
+            onPressed: searchController.clear,
+            icon: Icon(Icons.clear),
           ),
           filled: true,
           hintText: "Search headlines news",
