@@ -44,5 +44,8 @@ class MediaViewModel with ChangeNotifier {
       notifyListeners();
       rethrow;
     }
+    _isLoading = false;
+
+    notifyListeners();
   }
 }
