@@ -3,11 +3,24 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quick_news/src/ui/media/media_viewmodel.dart';
 import 'package:quick_news/src/ui/web_view/web_view.dart';
 
-class MediaPage extends ConsumerWidget {
+class MediaPage extends ConsumerStatefulWidget {
   const MediaPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _NewsPageState createState() => _NewsPageState();
+}
+
+class _NewsPageState extends ConsumerState<MediaPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(mediaViewModelProvider).fetchMedia();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final viewModel = ref.watch(mediaViewModelProvider);
 
     return Scaffold(

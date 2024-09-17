@@ -18,7 +18,6 @@ class _NewsPageState extends ConsumerState<NewsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(newsViewModelProvider).fetchHeadLineNews();

@@ -28,24 +28,23 @@ class MediaViewModel with ChangeNotifier {
   final _mediaBox = Hive.box<Media>(mediaBoxName);
 
   Future<void> fetchMedia() async {
+    _isLoading = true;
+    notifyListeners();
+
     final stopwatch = Stopwatch()..start();
     print('fetchMedia: started');
     try {
       final mediaList = await _repository.fetchMedia();
       print('fetchMedia: completed in ${stopwatch.elapsed.inMilliseconds}ms');
       _mediaList = mediaList;
-      _isLoading = false;
-      notifyListeners();
-    } catch (e, stackTrace) {
+    } on Exception catch (e, stackTrace) {
       print('fetchMedia: error: $e');
       print(stackTrace);
       _mediaList = _mediaBox.values.toList();
+      rethrow;
+    } finally {
       _isLoading = false;
       notifyListeners();
-      rethrow;
     }
-    _isLoading = false;
-
-    notifyListeners();
   }
 }
