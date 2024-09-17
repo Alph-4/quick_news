@@ -18,7 +18,7 @@ class MobileAppHomePage extends StatefulWidget {
 
 class _MobileAppHomePageState extends State<MobileAppHomePage> {
   int _currentPageIndex = 0;
-  var _isConnected = false;
+  bool? _isConnected;
   late StreamSubscription<InternetConnectionStatus> subscription;
   setCurrentPageIndex(int index) {
     setState(() {
@@ -60,18 +60,17 @@ class _MobileAppHomePageState extends State<MobileAppHomePage> {
         child: Scaffold(
             body: Column(
               children: [
-                if (!_isConnected)
-                  // Show the error bar when not connected
-                  Container(
-                    color: Colors.red,
-                    height: 50,
-                    child: const Center(
-                      child: Text(
-                        'No internet connection',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                // Show the error bar when not connected
+                Container(
+                  color: Colors.red,
+                  height: _isConnected != null && !_isConnected! ? 50 : 0,
+                  child: const Center(
+                    child: Text(
+                      'No internet connection',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
+                ),
                 Expanded(
                   child: IndexedStack(
                     index: _currentPageIndex,

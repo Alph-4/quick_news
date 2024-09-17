@@ -12,14 +12,14 @@ class MediaPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Media")),
-      body: Expanded(
-          child: viewModel.mediaList == null
-              ? const CircularProgressIndicator()
-              : mediaFeed(viewModel)),
+      body: Center(
+          child: Expanded(
+              child: viewModel.mediaList == null
+                  ? const CircularProgressIndicator()
+                  : mediaFeed(viewModel))),
     );
   }
 
-<<<<<<<<<<<<<<  ✨ Codeium Command ⭐  >>>>>>>>>>>>>>>>
   /// A widget that displays a list of [Media] items.
   ///
   /// The widget uses a [ListView.builder] to display a list of [Card] widgets.
@@ -28,7 +28,6 @@ class MediaPage extends ConsumerWidget {
   ///
   /// This widget takes a [MediaViewModel] as a parameter, which is used to
   /// retrieve the list of media items to display.
-<<<<<<<  1d51a9e5-862d-4941-9d96-7aef61d17b11  >>>>>>>
   Widget mediaFeed(MediaViewModel viewModel) {
     return ListView.builder(
       itemCount: viewModel.mediaList!.length,
