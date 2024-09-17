@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:quick_news/src/data/service/connectivity_service.dart';
 import 'package:quick_news/src/ui/media/media_page.dart';
 import 'package:quick_news/src/ui/news/news_page.dart';
 import 'package:quick_news/src/ui/profile/profile_page.dart';

@@ -34,7 +34,7 @@ class WebViewPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('WebView'),
+        title: const Text('WebView'),
       ),
       body: WebViewWidget(controller: controller),
     );

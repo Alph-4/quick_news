@@ -31,5 +31,6 @@ Future<void> initHive() async {
 
   await Hive.openBox<NewModel>(newsBoxName);
   await Hive.openBox<Media>(mediaBoxName);
+  await Hive.openBox<Media>(favoriteMediaBoxName);
   //await Hive.openBox<NewModel>(favoriteNewsBoxName);
 }

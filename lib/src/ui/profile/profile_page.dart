@@ -1,11 +1,12 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quick_news/src/data/local/model/local_user.dart';
 import 'package:quick_news/src/ui/contact_us/contact_page.dart';
+import 'package:quick_news/src/ui/media/favorites_media__page.dart';
+import 'package:quick_news/src/ui/profile/edit_profile.dart';
 import 'package:quick_news/src/ui/theme/app_theme.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -55,56 +56,93 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         children: [
           userCard(_imageFile),
           const SizedBox(height: 20),
-          ListTile(
-            leading: Icon(Icons.person),
-            trailing: Icon(Icons.arrow_forward_ios_outlined),
-            onTap: () {
-              // TODO:
-            },
-            title: const Text('Edit Profile'),
-          ),
+          editProfileButton(),
           const SizedBox(height: 20),
-          ListTile(
-            leading: Icon(Icons.star),
-            trailing: Icon(Icons.arrow_forward_ios_outlined),
-            onTap: () {
-              // TODO: go to store app page
-            },
-            title: const Text('Rate App'),
-          ),
+          rateAppButton(),
           const SizedBox(height: 20),
-          ListTile(
-            leading: Icon(Icons.favorite),
-            trailing: Icon(Icons.arrow_forward_ios_outlined),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ContactPage(),
-                ),
-              );
-            },
-            title: const Text('Favorites Article'),
-          ),
+          favoriteArticleButton(),
           const SizedBox(height: 20),
-          ListTile(
-            leading: Icon(Icons.mail),
-            trailing: Icon(Icons.arrow_forward_ios_outlined),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ContactPage(),
-                ),
-              );
-            },
-            title: const Text('Send Suggestions'),
-          ),
+          favoriteMediaButton(),
+          const SizedBox(height: 20),
+          sendSuggestionsButton(),
           const Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text('Version 1.0.0'),
           ),
         ],
       ),
+    );
+  }
+
+  Widget editProfileButton() {
+    return ListTile(
+      leading: const Icon(Icons.person),
+      trailing: const Icon(Icons.arrow_forward_ios_outlined),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const EditProfilPage(),
+          ),
+        );
+      },
+      title: const Text('Edit Profile'),
+    );
+  }
+
+  Widget rateAppButton() {
+    return ListTile(
+      leading: const Icon(Icons.star),
+      trailing: const Icon(Icons.arrow_forward_ios_outlined),
+      onTap: () {
+        // TODO: go to store app page
+      },
+      title: const Text('Rate App'),
+    );
+  }
+
+  Widget favoriteArticleButton() {
+    return ListTile(
+      leading: const Icon(Icons.favorite),
+      trailing: const Icon(Icons.arrow_forward_ios_outlined),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const ContactPage(),
+          ),
+        );
+      },
+      title: const Text('Favorites Article'),
+    );
+  }
+
+  Widget favoriteMediaButton() {
+    return ListTile(
+      leading: const Icon(Icons.favorite),
+      trailing: const Icon(Icons.arrow_forward_ios_outlined),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const FavoritesMediaPage(),
+          ),
+        );
+      },
+      title: const Text('Favorites Media'),
+    );
+  }
+
+  Widget sendSuggestionsButton() {
+    return ListTile(
+      leading: const Icon(Icons.mail),
+      trailing: const Icon(Icons.arrow_forward_ios_outlined),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const ContactPage(),
+          ),
+        );
+      },
+      title: const Text('Send Suggestions'),
     );
   }
 
@@ -130,7 +168,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 child: CircleAvatar(
                   radius: 50,
                   backgroundImage: imageFile != null
-                      ? FileImage(imageFile!) as ImageProvider
+                      ? FileImage(imageFile) as ImageProvider
                       : (LocalUser().profileImageUrl != null &&
                               LocalUser().profileImageUrl!.isNotEmpty)
                           ? NetworkImage(LocalUser().profileImageUrl!)

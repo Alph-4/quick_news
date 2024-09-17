@@ -42,15 +42,14 @@ class _SearchPageState extends ConsumerState<SearchPage> {
         title: const Text('Search  News'),
       ),
       body: SafeArea(
-        child: Center(
-            child: Column(
+        child: Column(
           children: [
             searchBar(viewModel),
             viewModel.searchNews == null
                 ? makeSearchView()
                 : newsFeed(viewModel),
           ],
-        )),
+        ),
       ),
     );
   }
@@ -106,6 +105,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
 
   Widget searchBar(SearchNewsViewModel viewModel) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
             offset: const Offset(12, 26),

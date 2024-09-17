@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quick_news/src/data/model/media.dart';
 import 'package:quick_news/src/ui/media/media_viewmodel.dart';
+import 'package:quick_news/src/ui/media/widget/media_card.dart';
 import 'package:quick_news/src/ui/web_view/web_view.dart';
 
 class MediaPage extends ConsumerStatefulWidget {
@@ -51,36 +53,9 @@ class _NewsPageState extends ConsumerState<MediaPage> {
                 builder: (context) =>
                     WebViewPage(url: viewModel.mediaList![index].url!)));
           },
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    viewModel.mediaList![index].name!,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    viewModel.mediaList![index].description!,
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Category: ${viewModel.mediaList![index].category!}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          child: MediaCard(
+            media: viewModel.mediaList![index],
+            viewModel: viewModel,
           ),
         );
       },

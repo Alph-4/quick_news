@@ -3,11 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 //HIVE BOX
-  final String  newsBoxName = "news_box";
-  final String  favoriteNewsBoxName = "favorites_news_box";
-  final String  mediaBoxName = "media_box";
-
-
+const String newsBoxName = "news_box";
+const String favoriteNewsBoxName = "favorites_news_box";
+const String mediaBoxName = "media_box";
+const String favoriteMediaBoxName = "favorites_media_box";
 
 enum Flavor { development, production }
 

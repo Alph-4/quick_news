@@ -26,6 +26,7 @@ class MediaViewModel with ChangeNotifier {
   List<Media>? get mediaList => _mediaList;
 
   final _mediaBox = Hive.box<Media>(mediaBoxName);
+  final favoriteMediaBox = Hive.box<Media>(favoriteMediaBoxName);
 
   Future<void> fetchMedia() async {
     _isLoading = true;
@@ -45,6 +46,54 @@ class MediaViewModel with ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  void addToFavoritesMedia(Media media) {
+    print('addToFavoritesMedia: started');
+    final stopwatch = Stopwatch()..start();
+    try {
+      favoriteMediaBox.add(media);
+      print(
+          'addToFavoritesMedia: completed in ${stopwatch.elapsed.inMilliseconds}ms');
+    } on Exception catch (e, stackTrace) {
+      print('addToFavoritesMedia: error: $e');
+      print(stackTrace);
+      rethrow;
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  void removeFromFavoritesMedia(Media media) {
+    print('removeFromFavoritesMedia: started');
+    final stopwatch = Stopwatch()..start();
+    try {
+      favoriteMediaBox.delete(media);
+      print(
+          'removeFromFavoritesMedia: completed in ${stopwatch.elapsed.inMilliseconds}ms');
+    } on Exception catch (e, stackTrace) {
+      print('removeFromFavoritesMedia: error: $e');
+      print(stackTrace);
+      rethrow;
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  bool isFavoriteMedia(Media media) {
+    print('isFavoriteMedia: started');
+    final stopwatch = Stopwatch()..start();
+    try {
+      final result =
+          favoriteMediaBox.values.any((element) => element.name == media.name);
+      print(
+          'isFavoriteMedia: completed in ${stopwatch.elapsed.inMilliseconds}ms');
+      return result;
+    } on Exception catch (e, stackTrace) {
+      print('isFavoriteMedia: error: $e');
+      print(stackTrace);
+      rethrow;
     }
   }
 }

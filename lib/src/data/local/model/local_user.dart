@@ -9,7 +9,7 @@ class LocalUser {
 
   LocalUser._internal();
 
-  String? uid = Uuid().v4();
+  String? uid = const Uuid().v4();
   String? email = "test@test.test";
   String? displayName = "test";
   String? profileImageUrl;
