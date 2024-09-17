@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:quick_news/src/data/service/connectivity_service.dart';
 import 'package:quick_news/src/ui/media/media_page.dart';
 import 'package:quick_news/src/ui/news/news_page.dart';
@@ -15,8 +18,8 @@ class MobileAppHomePage extends StatefulWidget {
 
 class _MobileAppHomePageState extends State<MobileAppHomePage> {
   int _currentPageIndex = 0;
-  bool _isConnected = true; // Variable to store the connection status
-
+  var _isConnected = false;
+  late StreamSubscription<InternetConnectionStatus> subscription;
   setCurrentPageIndex(int index) {
     setState(() {
       _currentPageIndex = index;
@@ -26,21 +29,29 @@ class _MobileAppHomePageState extends State<MobileAppHomePage> {
   @override
   void initState() {
     super.initState();
-    final connectivityService = ConnectivityService(Connectivity());
+    final connectionChecker = InternetConnectionChecker();
 
-    // Check the internet connection on initState
-    connectivityService.checkInternetConnection().then((isConnected) {
-      setState(() {
-        _isConnected = isConnected;
-      });
-    });
+    subscription = connectionChecker.onStatusChange.listen(
+      (InternetConnectionStatus status) {
+        if (status == InternetConnectionStatus.connected) {
+          print('Connected to the internet');
+          setState(() {
+            _isConnected = true;
+          });
+        } else {
+          print('Disconnected from the internet');
+          setState(() {
+            _isConnected = false;
+          });
+        }
+      },
+    );
+  }
 
-    // Listen to connectivity changes
-    connectivityService.onConnectivityChanged.listen((connectivityResult) {
-      setState(() {
-        _isConnected = connectivityResult != ConnectivityResult.none;
-      });
-    });
+  @override
+  void dispose() {
+    super.dispose();
+    subscription.cancel();
   }
 
   @override

@@ -86,12 +86,17 @@ class _NewsPageState extends ConsumerState<NewsPage> {
       return const Center(child: CircularProgressIndicator());
     }
     return Expanded(
-      child: ListView.builder(
-        itemCount: viewModel.headlineNews?.length ?? 0,
-        itemBuilder: (context, index) => NewCard(
-          newItem: viewModel.headlineNews![index],
-        ),
-      ),
+      child: RefreshIndicator(
+          onRefresh: () => viewModel.selectedCategory.isEmpty
+              ? viewModel.fetchHeadLineNews()
+              : viewModel
+                  .fetchHeadLineNewsByCategory(viewModel.selectedCategory),
+          child: ListView.builder(
+            itemCount: viewModel.headlineNews?.length ?? 0,
+            itemBuilder: (context, index) => NewCard(
+              newItem: viewModel.headlineNews![index],
+            ),
+          )),
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:quick_news/src/data/model/source.dart';
 
 part 'news.g.dart';
 
-@HiveType(typeId: 1) //typeId should be unique for each model
+@HiveType(typeId: 1)
 class NewModel {
   @HiveField(0)
   final Source source;

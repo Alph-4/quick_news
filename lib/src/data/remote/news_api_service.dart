@@ -25,6 +25,7 @@ class NewsService {
 
     final response =
         await http.get(Uri.https('newsapi.org', 'v2/top-headlines', params));
+    final newsBox = Hive.box<NewModel>(newsBoxName);
 
     print('fetchHeadLineNews: response status: ${response.statusCode}');
     if (response.statusCode == 200) {
@@ -37,7 +38,6 @@ class NewsService {
             .map((json) => NewModel.fromJson(json))
             .toList();
 
-        final newsBox = Hive.box<NewModel>(newsBoxName);
         await newsBox.clear();
         await newsBox.addAll(dataList);
 
@@ -46,11 +46,11 @@ class NewsService {
         return dataList;
       } else {
         print('fetchHeadLineNews: error: ${jsonData['message']}');
-        throw Exception(jsonData['message']);
+        return newsBox.values.toList();
       }
     } else {
       print('fetchHeadLineNews: error: Failed to load news');
-      throw Exception('Failed to load news');
+      return newsBox.values.toList();
     }
   }
 
@@ -120,11 +120,21 @@ class NewsService {
     }
   }
 
+  /// Fetches a list of media sources from the News API.
+  ///
+  /// This call is identical to [fetchHeadLineNews] but returns a list of
+  /// [Media] objects instead of [NewModel] objects.
+  ///
+  /// The [country], [category] and [language] parameters are optional.
+  ///
+  /// Throws an [Exception] if the API call fails.
   Future<List<Media>> fetchMedia({
     String? country,
     String? category,
     String? language,
   }) async {
+    final mediaBox = Hive.box<Media>(mediaBoxName);
+
     final params = <String, String>{
       'apiKey': Constants.of().apiKey,
     };
@@ -152,13 +162,12 @@ class NewsService {
             .map((json) => Media.fromJson(json))
             .toList();
 
-        final mediaBox = Hive.box<Media>(mediaBoxName);
         await mediaBox.clear();
         await mediaBox.addAll(dataList);
 
         return dataList; // Add this return statement
       } else {
-        throw Exception(jsonData['message']);
+        return throw Exception(jsonData['message']);
       }
     } else {
       throw Exception('Failed to load media');

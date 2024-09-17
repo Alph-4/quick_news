@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quick_news/src/data/model/news.dart';
 import 'package:quick_news/src/data/repository/news_repository_impl.dart';
+import 'package:quick_news/src/fondation/constants.dart';
 
 final newsViewModelProvider =
     ChangeNotifierProvider((ref) => NewsViewModel(ref));
@@ -20,6 +22,8 @@ class NewsViewModel with ChangeNotifier {
 
   List<NewModel>? _headlineNews;
   List<NewModel>? get headlineNews => _headlineNews;
+
+  final newsBox = Hive.box<NewModel>(newsBoxName);
 
   void updateCategory(String category) {
     _selectedCategory = category;
@@ -42,7 +46,10 @@ class NewsViewModel with ChangeNotifier {
           'fetchHeadLineNews: completed in ${stopwatch.elapsed.inMilliseconds}ms');
       _headlineNews = headLineNewsList;
     } catch (e, stackTrace) {
+      _headlineNews = newsBox.values.toList();
       print('fetchHeadLineNews: error: $e');
+      _isLoading = false;
+      notifyListeners();
       print(stackTrace);
       rethrow;
     }
@@ -62,6 +69,9 @@ class NewsViewModel with ChangeNotifier {
           'fetchHeadLineNewsByCategory: completed in ${stopwatch.elapsed.inMilliseconds}ms');
       _headlineNews = headLineNewsList;
     } catch (e, stackTrace) {
+      _headlineNews = newsBox.values.toList();
+      _isLoading = false;
+      notifyListeners();
       print('fetchHeadLineNewsByCategory: error: $e');
       print(stackTrace);
       rethrow;
